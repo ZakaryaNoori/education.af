@@ -1,32 +1,63 @@
 <template>
-  <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view/>
-  </div>
+    <div
+        id="app"
+        :class="showNav ? 'flex flex-col min-h-screen' : 'is-verticle'"
+    >
+        <Navbar v-if="showNav" />
+        <LoggedNav v-else />
+        <transition name="fade-in" mode="out-in">
+          <router-view class="flex-grow flex flex-col justify-center" />
+        </transition>
+        <SideBar v-if="!showNav" />
+        <div class="lg:mb-5 py-3 uk-link-reset" v-if="showNav">
+            <div
+                class="flex flex-col items-center justify-between lg:flex-row max-w-6xl mx-auto lg:space-y-0 space-y-3"
+            >
+                <p class="capitalize">© copyright 2021 by Education.af</p>
+                <div class="flex space-x-4 text-gray-700">
+                    <a href="#"> About</a>
+                    <a href="#"> Help</a>
+                    <a href="#"> Terms</a>
+                    <a href="#"> Privacy</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script>
+import Navbar from './components/Navbar.vue';
+import LoggedNav from './components/LoggedNav.vue';
+import SideBar from './components/SideBar.vue';
+export default {
+    components: {
+        Navbar,
+        LoggedNav,
+        SideBar,
+    },
+    computed: {
+        showNav() {
+            return (
+                this.$route.name == 'login' || this.$route.name == 'register'
+            );
+        },
+    },
+};
+</script>
+
+<style>
+.fade-in-enter {
+  opacity: 0;
+  transform: translateY(10px);
 }
 
-nav {
-  padding: 30px;
+.fade-in-enter-active {
+  transition: all .22s ease;;
+}
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+.fade-in-leave-active {
+  transition: all .22s;
+  opacity: 0;
+  transform: translateY(10px);
 }
 </style>
