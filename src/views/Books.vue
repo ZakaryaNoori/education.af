@@ -44,14 +44,14 @@
                       rounded-md
                     "
                   >
-                    <a href="book-description.html">
+                    <router-link to="books/1234">
                       <img
                         src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/book/book1.jpg"
                         alt=""
                         class="w-full h-44 object-cover"
                       />
                       <div class="p-3 truncate">Vue.js Basics</div>
-                    </a>
+                    </router-link>
                   </div>
                 </li>
                 <li>
