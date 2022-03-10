@@ -3,44 +3,55 @@
         <div class="sidebar">
             <div class="sidebar_inner" data-simplebar>
                 <ul class="side-colored">
-                    <li class="active" v-if="isLoggedIn && isTeacher">
-                        <router-link to="/create-course">
+                    <router-link to="/create-course" tag="li" active-class="active" v-if="isLoggedIn && isTeacher">
+                        <a href="javascript:void(0)">
                             <ion-icon name="compass" class="bg-gradient-to-br from-purple-300 p-1 rounded-md side-icon text-opacity-80 text-white to-blue-500">
                             </ion-icon>
                             <span> Create Course</span>
-                        </router-link>
-                    </li>
-                <!-- UIkit.notification({ message: 'User created <strong>successfully</strong> <br /> redirecting to login' , pos: 'top-right', status: 'success'  }); -->
-                    <li><router-link to="/courses">
+                        </a>
+                    </router-link>
+                    <router-link to="/courses" tag="li" active-class="active">
+                        <a href="javascript:void(0)">
                             <ion-icon name="play-circle" class="bg-gradient-to-br from-yellow-300 p-1 rounded-md side-icon text-opacity-80 text-white to-red-500">
                             </ion-icon>
                             <span> Courses</span>
-                        </router-link>
-                    </li>
-                    <li><a href="categories.html">
+                        </a>
+                    </router-link>
+                    <router-link to="/categories" tag="li" active-class="active">
+                        <a href="javascript:void(0)">
                             <ion-icon name="albums"  class="bg-gradient-to-br from-green-300 p-1 rounded-md side-icon text-opacity-80 text-white to-green-500">
                             </ion-icon>
                             <span> Categories </span>
                         </a>
-                    </li>
-                    <li><a href="episodes.html">
+                    </router-link>
+                    <!-- <router-link to="/episodes" tag="li" active-class="active">
+                        <a href="javascript:void(0)">
                             <ion-icon name="film" class="bg-gradient-to-br from-pink-300 p-1 rounded-md side-icon text-opacity-80 text-white to-red-500">
                             </ion-icon>
                             <span> Episodes </span>
                         </a>
-                    </li>
-                    <li><a href="books.html">
+                    </router-link> -->
+                    <router-link to="/books" tag="li" active-class="active">
+                        <a href="books.html">
                             <ion-icon name="book" class="bg-gradient-to-br from-yellow-300 p-1 rounded-md side-icon text-opacity-80 text-white to-red-500">
                             </ion-icon>
                             <span> Books </span>
                         </a>
-                    </li>
-                    <li v-if="isLoggedIn && isTeacher"><router-link to="my-courses">
+                    </router-link>
+                    <router-link to="/add-books" tag="li" active-class="active">
+                        <a href="books.html">
+                            <ion-icon name="book" class="bg-gradient-to-br from-yellow-300 p-1 rounded-md side-icon text-opacity-80 text-white to-red-500">
+                            </ion-icon>
+                            <span> Add new book </span>
+                        </a>
+                    </router-link>
+                    <router-link v-if="isLoggedIn && isTeacher" to="/my-courses" tag="li" active-class="active">
+                        <a href="javascript:void(0)">
                             <ion-icon name="newspaper" class="bg-gradient-to-br from-purple-300 p-1 rounded-md side-icon text-opacity-80 text-white to-blue-500">
                             </ion-icon>
                             <span> My Courses</span>
-                        </router-link>
-                    </li>
+                        </a>
+                    </router-link>
                 </ul>
 
                 <ul class="side_links" data-sub-title="Pages">
