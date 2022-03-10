@@ -39,6 +39,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/CourseIntro.vue')
   },
   {
+    path: '/courses/:id/lectures',
+    name: 'lectures',
+    component: () => import(/* webpackChunkName: "about" */ '../views/CourseWatch.vue')
+  },
+  {
     path: '/create-course',
     name: 'create-course',
     component: () => import(/* webpackChunkName: "about" */ '../views/CreateCourse.vue')
@@ -72,7 +77,7 @@ const routes = [
     path: '/categories',
     name: 'categories',
     component: () => import(/* webpackChunkName: "about" */ '../views/Categories.vue')
-  }
+  },
 ]
 
 const router = new VueRouter({

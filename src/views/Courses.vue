@@ -7,20 +7,9 @@
                     <!-- title -->
                     <div class="mb-2">
                         <div class="text-xl font-semibold">  The world's largest selection of courses  </div>
-                        <div class="text-sm mt-2">  Choose from 130,000 online video courses with new additions published every month </div>
+                        <div class="text-sm mt-2">  Choose from hundreds of online video courses with new additions published every month </div>
                     </div>
 
-                    <!-- nav -->
-                    <nav class="cd-secondary-nav border-b md:m-0 -mx-4 nav-small">
-                        <ul>
-                            <li class="active"><a href="#" class="lg:px-2">   Python </a></li>
-                            <li><a href="#" class="lg:px-2"> Web development </a></li>
-                            <li><a href="#" class="lg:px-2"> JavaScript  </a></li>
-                            <li><a href="#" class="lg:px-2"> Softwares  </a></li>
-                            <li><a href="#" class="lg:px-2"> Drawing  </a></li>
-                        </ul>
-                    </nav>
-    
                     <!--  slider -->
                     <div class="mt-3">
     
@@ -37,7 +26,7 @@
                                         <div class="card uk-transition-toggle h-full flex flex-col">
                                                 <div class="card-media h-40">
                                                     <div class="card-media-overly"></div>
-                                                    <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/courses/img-1.jpg" alt="" class="">
+                                                    <img :src="'http://localhost:3000/api/attachments/' + course.image" alt="" class="">
                                                     <span class="icon-play"></span>
                                                 </div>
                                                 <div class="card-body p-4 flex-grow flex flex-col">
@@ -47,7 +36,7 @@
                                                     </div>
                                                     <div class="pt-1 flex justify-between flex-grow items-end">
                                                         <div class="text-sm font-medium"> {{ course.user.name }} </div>
-                                                        <div class="text-xs font-semibold bg-indigo-100 text-indigo-900 px-2 py-1 rounded-full" v-if="course.isEnrolled">  'enrolled' </div>
+                                                        <div class="text-xs font-semibold bg-indigo-100 text-indigo-900 px-2 py-1 rounded-full" v-if="course.isEnrolled">  enrolled </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -352,7 +341,7 @@ export default {
             this.loading = false;
             this.courses = response.data.docs
           })
-    }
+    },
   },
 }
 </script>

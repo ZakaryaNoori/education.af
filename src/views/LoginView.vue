@@ -80,6 +80,10 @@ export default {
                 // add user to local storage
                 localStorage.setItem('user', JSON.stringify(res.data.user));
                 localStorage.setItem('userId', JSON.stringify(res.data.user._id));
+
+                this.$store.dispatch('user/setToken', res.data.token);
+                this.$store.dispatch('user/setUser', res.data.user);
+
                 // redirect to dashboard
                 this.$router.push('/');
             })

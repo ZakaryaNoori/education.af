@@ -1,6 +1,5 @@
 <template>
-   <div class="main_content">
-
+   <div class="main_content" v-if="!loading">
             <!-- course preview details -->
             <div class="bg-gradient-to-tr from-pink-500 to-red-500 text-white">
                 <div class="container p-0">
@@ -8,24 +7,20 @@
     
                         <div class="lg:w-4/12">
                             <div class="w-full h-44 overflow-hidden rounded-lg relative lg:mb-0 mb-4">
-                                <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/courses/img-1.jpg" alt="" class="w-full h-full absolute inset-0 object-cover">
-                                <a href="#trailer-modal" class="uk-position-center" uk-toggle>
-                                    <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/icon-play.svg" class="w-16 h-16" alt="">
-                                </a>
+                                <img :src="'http://localhost:3000/api/attachments/' + course.image" alt="" class="w-full h-full absolute inset-0 object-cover">
                             </div>
                         </div>
                         <div class="lg:w-8/12">
                              
                             <h1 class="lg:leading-10 lg:text-2xl text-white text-xl leading-8 font-semibold">{{ course && course.title }}</h1>
-                            <p class="line-clamp-2 mt-3 md:block hidden" v-text-terminate="50">
-                                {{ course && course.description }}  
+                            <p class="line-clamp-2 mt-3 md:block hidden">
+                                {{ course && course.description.slice(0, 101) }}...
                              </p>
                             <ul class="lg:flex items-center text-gray-100 mt-3 opacity-90">
                                 <li> Created by <a href="#" class="text-white fond-bold hover:underline hover:text-white"> {{ course && course.user.name }} </a> </li>
                                 <span class="lg:block hidden mx-3 text-2xl">·</span>
                                 <li> Last updated {{ course && createUpdatedAtReadable(course.updatedAt) }}</li>
                             </ul>
-
                         </div>
     
                     </div>
@@ -38,19 +33,22 @@
 
                     <nav class="cd-secondary-nav nav-smal l flex-1">
                         <ul class="space-x-3" uk-scrollspy-nav="closest: li; scroll: true">
-                            <li><a href="#Overview" uk-scroll>Overview</a></li>
-                            <li><a href="#curriculum" uk-scroll>Curriculum</a></li> 
-                            <li><a href="#announcement">Announcement</a></li>
+                            <li><a @click="scrollToElement('overview')" class="cursor-pointer">Overview</a></li>
+                            <li><a @click="scrollToElement('curriculum')" class="cursor-pointer">Lectures</a></li> 
+                            <li><a @click="scrollToElement('announcement')" class="cursor-pointer">Announcement</a></li>
+                            <li><a @click="scrollToElement('comments')" class="cursor-pointer">comments</a></li>
                         </ul>
                     </nav>
 
-                    <div class="flex space-x-3" v-if="!isMyCourse">
-                        <!-- <a href="#" class="flex items-center justify-center h-9 px-6 rounded-md bg-gray-100"> Add to Wishlist </a> -->
+                    <div class="flex space-x-3 mr-2" v-if="!isMyCourse()">
                         <a href="javascript:void(0)" @click="enroll()" v-if="course && !course.isEnrolled" class="flex items-center justify-center h-9 px-6 rounded-md bg-blue-600 text-white hover:text-white"> Enroll Now </a>
                         <a href="javascript:void(0)" @click="decline()" v-else class="flex items-center justify-center h-9 px-6 rounded-md bg-red-600 text-white hover:text-white">
                             Decline course
                         </a>
                     </div>
+                    <router-link v-if="course.isEnrolled" :to="this.$route.params.id + '/lectures'">
+                        <a href="javascript:void(0)" class="flex items-center justify-center h-9 px-6 rounded-md bg-blue-600 text-white hover:text-white"> Go to lectures </a>
+                    </router-link>
                      
                 </div>
             </div>
@@ -60,13 +58,13 @@
                 <div class="space-y-5 lg:w-9/12 mx-auto">
                         
                     <!-- course description -->
-                    <div class="tube-card p-5 lg:p-8" id="Overview">
+                    <div class="tube-card p-5 lg:p-8" id="overview">
     
                         <div class="space-y-6">
                             <div>
                                 <h3 class="text-lg font-semibold mb-3"> Description </h3>
                                 <p>
-                                    {{ course && course.description }}
+                                    {{ course.description }}
                                 </p>
                             </div>
                         </div>
@@ -77,7 +75,7 @@
                     <div id="curriculum">
                         <div class="flex items-center justify-between mb-5">
                             <h3 class="text-xl font-semibold "> Course Lecures </h3>
-                            <router-link :to="`/add-lecture/${course._id}`" class="button">Add lecture</router-link>
+                            <router-link :to="`/add-lecture/${course._id}`" class="button" v-if="isMyCourse()">Add lecture</router-link>
                         </div>
                         <ul uk-accordion="multiple: true" class="tube-card p-4 divide-y space-y-3">
     
@@ -85,26 +83,12 @@
                                 <div class="uk-accordion-content text-base mt-0">
                                     <ul class="course-curriculum-list font-medium">
                                         <li class=" hover:bg-gray-100 p-2 flex rounded-md cursor-pointer flex items-center justify-between" v-for="lecture in lectures" :key="lecture.id">
-                                            <span v-text-terminate="62">{{ lecture.title }}</span>
+                                            <div class="flex items-center">
+                                                <ion-icon name="play-circle" class="text-2xl mr-2"></ion-icon>
+                                                <span v-text-terminate="62">{{ lecture.title }}</span>
+                                            </div>
                                             <ion-icon name="arrow-forward-outline"></ion-icon>
                                         </li>
-                                        <!-- <li class=" hover:bg-gray-100 p-2 flex rounded-md">
-                                            <ion-icon name="play-circle" class="text-2xl mr-2"></ion-icon> What is HTML <span class="text-sm ml-auto"> 5 min </span>
-                                        </li>
-                                        <li class=" hover:bg-gray-100 p-2 flex rounded-md">
-                                            <ion-icon name="play-circle" class="text-2xl mr-2"></ion-icon>
-                                            What is a Web page? <span class="text-sm ml-auto"> 8 min </span>
-                                        </li>
-                                        <li class=" hover:bg-gray-100 p-2 flex rounded-md">
-                                            <ion-icon name="play-circle" class="text-2xl mr-2"></ion-icon>
-                                            Your First Web Page  
-                                            <a href="#trailer-modal" class="bg-gray-200 ml-4 px-2 py-1 rounded-full text-xs" uk-toggle=""> Preview </a>
-                                            <span class="text-sm ml-auto"> 4 min </span>
-                                        </li>
-                                        <li class=" hover:bg-gray-100 p-2 flex rounded-md">
-                                            <ion-icon name="play-circle" class="text-2xl mr-2"></ion-icon>
-                                            Brain Streak <span class="text-sm ml-auto"> 5 min </span>
-                                        </li> -->
                                     </ul>
                                 </div>
                             </li>
@@ -112,10 +96,10 @@
                     </div>
     
                     <!-- course Announcement -->
-                    <div id="announcement" class="tube-card p-5 lg:p-8" v-if="course.announcements.length > 0 || isMyCourse">
-                        <div class="flex items-center justify-between mb-5">
+                    <div id="announcement" class="tube-card p-5 lg:p-8" v-if="course.announcements.length > 0 || isMyCourse()">
+                        <div class="flex items-center justify-between" :class="{'mb-5': course.announcements.length > 0}">
                             <h3 class="text-xl font-semibold"> Announcement </h3>
-                            <a class="button gray" href="#modal-example" uk-toggle v-if="isMycourse">Add Announcement</a>
+                            <a class="button gray" href="#modal-example" uk-toggle v-if="isMyCourse()">Add Announcement</a>
                         </div>
 
                         <div class="space-y-5">
@@ -151,6 +135,29 @@
                     </div>
 
 
+                     <!-- course Curriculum -->
+                    <div id="comments">
+                        <div class="flex items-center justify-between mb-5">
+                            <h3 class="text-xl font-semibold "> Comments </h3>
+                        </div>
+                        <div class="tube-card p-5">
+                            <div class="mb-5 space-y-2">
+                                <div v-for="comment in course.comments" :key="comment.id" class="bg-gray-50 border flex gap-x-4 p-4 relative rounded-md">
+                                    {{ comment.content }}
+                                </div>
+                            </div>
+                            <div v-if="course.isEnrolled">
+                                <div>
+                                    <textarea name="comments" id="" cols="30" rows="3" class="with-border p-3" v-model="comment"></textarea>
+                                </div>
+                                <div class="flex mt-2 justify-end">
+                                    <button class="button" @click="submitComment()">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
 
                 </div>
 
@@ -177,29 +184,29 @@ export default {
   data() {
     return {
       course: {
-          user: {},
+          user: {
+              id: null
+          },
           announcements: []
       },
       lectures: [],
       title: '',
-      content: ''
+      content: '',
+      loading: true,
+      comment: ''
     }
   },
-  async mounted () {
-    await this.fetchCourse();
+   mounted () {
+     this.fetchCourse();
 
-    this.fetchCourseLectures()
-  },
-  computed: {
-    isMyCourse() {
-        return JSON.parse(localStorage.getItem('userId')) == this.course.user.id;
-    },
+    this.fetchCourseLectures();
   },
   methods: {
-    async fetchCourse() {
-      await this.$http.get('courses/' + this.$route.params.id)
+     fetchCourse() {
+       this.$http.get('courses/' + this.$route.params.id)
       .then(res => {
         this.course = res.data
+        this.loading = false
       })
       .catch(err => {
         console.error(err); 
@@ -265,7 +272,33 @@ export default {
         .catch(err => {
             console.error(err); 
         })
-    }
+    },
+
+    isMyCourse() {
+        return this.course.user.id == this.$store.state.user.user.id;
+    },
+
+    submitComment() {
+        this.$http.post('/courses/' + this.$route.params.id + '/comments', {
+            content: this.comment
+        })
+        .then(res => {
+            // clear form
+            this.comment = '';
+            this.fetchCourse()
+        })
+        .catch(err => {
+            console.error(err); 
+        })
+    },
+
+    scrollToElement(id) {
+      let el = document.getElementById(id);
+      // scroll with offset
+      console.log(el)
+      let y = el.getBoundingClientRect().top + window.pageYOffset - 150;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    },
   },
 }
 </script>

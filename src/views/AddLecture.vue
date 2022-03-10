@@ -44,6 +44,7 @@ export default {
       this.$http.post('/lectures',this.lecture)
       .then(res => {
         UIkit.notification({ message: 'Lecture added successfully' , pos: 'top-right', status: 'success'  })
+        this.$router.push('/courses/' + this.lecture.course)
       })
       .catch(err => {
         this.errors = err.response.data
