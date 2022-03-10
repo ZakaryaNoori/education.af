@@ -142,7 +142,7 @@
                                 <li> 
                                     <router-link to="/courses">
                                         <ion-icon name="card-outline" class="is-icon"></ion-icon>
-                                        My courses
+                                        My enrollments
                                     </router-link>
                                 </li>
                                 <!-- <li> 

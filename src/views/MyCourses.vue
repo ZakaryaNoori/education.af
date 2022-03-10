@@ -29,7 +29,7 @@
                     <div class="card-media h-40">
                       <div class="card-media-overly"></div>
                       <img
-                        src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/courses/img-1.jpg"
+                        :src="'http://localhost:3000/api/attachments/' + course.image"
                         alt=""
                         class=""
                       />
@@ -60,7 +60,7 @@
                           "
                           v-if="course.isEnrolled"
                         >
-                          'enrolled'
+                          enrolled
                         </div>
                       </div>
                     </div>

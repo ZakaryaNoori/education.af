@@ -3,12 +3,16 @@
         id="app"
         :class="showNav ? 'flex flex-col min-h-screen' : 'is-verticle'"
     >
-        <Navbar v-if="showNav" />
-        <LoggedNav v-else />
+        <div v-if="this.$route.name !== 'lectures'">
+            <Navbar v-if="showNav" />
+            <LoggedNav v-else />
+        </div>
         <transition name="fade-in" mode="out-in">
           <router-view class="flex-grow flex flex-col justify-center" />
         </transition>
-        <SideBar v-if="!showNav" />
+        <div v-if="this.$route.name !== 'lectures'">
+            <SideBar v-if="!showNav" />
+        </div>
         <div class="lg:mb-5 py-3 uk-link-reset" v-if="showNav">
             <div
                 class="flex flex-col items-center justify-between lg:flex-row max-w-6xl mx-auto lg:space-y-0 space-y-3"
@@ -34,6 +38,10 @@ export default {
         Navbar,
         LoggedNav,
         SideBar,
+    },
+    created() {
+        this.$store.dispatch('user/setToken', localStorage.getItem('token'));
+        this.$store.dispatch('user/setUser', JSON.parse(localStorage.getItem('user')));
     },
     computed: {
         showNav() {
