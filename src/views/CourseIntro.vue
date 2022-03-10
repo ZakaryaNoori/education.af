@@ -17,21 +17,9 @@
                         <div class="lg:w-8/12">
                              
                             <h1 class="lg:leading-10 lg:text-2xl text-white text-xl leading-8 font-semibold">{{ course && course.title }}</h1>
-                            <p class="line-clamp-2 mt-3 md:block hidden">
+                            <p class="line-clamp-2 mt-3 md:block hidden" v-text-terminate="50">
                                 {{ course && course.description }}  
                              </p>
-            
-                            <!-- <ul class="flex text-gray-100 gap-4 mt-4 mb-1">
-                                <li class="flex items-center">
-                                    <span class="avg bg-yellow-500 mr-2 px-2 rounded text-white font-semiold"> 4.9 </span>
-                                    <div class="star-rating text-yellow-200">
-                                        <ion-icon name="star"></ion-icon> <ion-icon name="star"></ion-icon>
-                                        <ion-icon name="star"></ion-icon> <ion-icon name="star"></ion-icon>
-                                        <ion-icon name="star-half"></ion-icon>
-                                    </div>
-                                </li>
-                                <li class="opacity-90"> <ion-icon name="people-circle-outline"></ion-icon> 1200 Enerolled </li>
-                            </ul> -->
                             <ul class="lg:flex items-center text-gray-100 mt-3 opacity-90">
                                 <li> Created by <a href="#" class="text-white fond-bold hover:underline hover:text-white"> {{ course && course.user.name }} </a> </li>
                                 <span class="lg:block hidden mx-3 text-2xl">·</span>
@@ -52,13 +40,11 @@
                         <ul class="space-x-3" uk-scrollspy-nav="closest: li; scroll: true">
                             <li><a href="#Overview" uk-scroll>Overview</a></li>
                             <li><a href="#curriculum" uk-scroll>Curriculum</a></li> 
-                            <li><a href="#faq" uk-scroll>FAQ</a></li>
                             <li><a href="#announcement">Announcement</a></li>
-                            <li><a href="#reviews">Reviews</a></li>
                         </ul>
                     </nav>
 
-                    <div class="flex space-x-3">
+                    <div class="flex space-x-3" v-if="!isMyCourse">
                         <!-- <a href="#" class="flex items-center justify-center h-9 px-6 rounded-md bg-gray-100"> Add to Wishlist </a> -->
                         <a href="javascript:void(0)" @click="enroll()" v-if="course && !course.isEnrolled" class="flex items-center justify-center h-9 px-6 rounded-md bg-blue-600 text-white hover:text-white"> Enroll Now </a>
                         <a href="javascript:void(0)" @click="decline()" v-else class="flex items-center justify-center h-9 px-6 rounded-md bg-red-600 text-white hover:text-white">
@@ -89,18 +75,20 @@
     
                     <!-- course Curriculum -->
                     <div id="curriculum">
-                        <h3 class="mb-4 text-xl font-semibold lg:mb-5"> Course Curriculum </h3>
+                        <div class="flex items-center justify-between mb-5">
+                            <h3 class="text-xl font-semibold "> Course Lecures </h3>
+                            <router-link :to="`/add-lecture/${course._id}`" class="button">Add lecture</router-link>
+                        </div>
                         <ul uk-accordion="multiple: true" class="tube-card p-4 divide-y space-y-3">
     
                             <li class="uk-open">
-                                <a class="uk-accordion-title text-md mx-2 font-semibold" href="#">  <div class="mb-1 text-sm font-medium"> Section 1 </div> Html Introduction </a>
-                                <div class="uk-accordion-content mt-3 text-base">
-        
+                                <div class="uk-accordion-content text-base mt-0">
                                     <ul class="course-curriculum-list font-medium">
-                                        <li class=" hover:bg-gray-100 p-2 flex rounded-md">
-                                            <ion-icon name="play-circle" class="text-2xl mr-2"></ion-icon> Introduction <span class="text-sm ml-auto"> 4 min </span>
+                                        <li class=" hover:bg-gray-100 p-2 flex rounded-md cursor-pointer flex items-center justify-between" v-for="lecture in lectures" :key="lecture.id">
+                                            <span v-text-terminate="62">{{ lecture.title }}</span>
+                                            <ion-icon name="arrow-forward-outline"></ion-icon>
                                         </li>
-                                        <li class=" hover:bg-gray-100 p-2 flex rounded-md">
+                                        <!-- <li class=" hover:bg-gray-100 p-2 flex rounded-md">
                                             <ion-icon name="play-circle" class="text-2xl mr-2"></ion-icon> What is HTML <span class="text-sm ml-auto"> 5 min </span>
                                         </li>
                                         <li class=" hover:bg-gray-100 p-2 flex rounded-md">
@@ -116,411 +104,52 @@
                                         <li class=" hover:bg-gray-100 p-2 flex rounded-md">
                                             <ion-icon name="play-circle" class="text-2xl mr-2"></ion-icon>
                                             Brain Streak <span class="text-sm ml-auto"> 5 min </span>
-                                        </li>
+                                        </li> -->
                                     </ul>
-        
-                                </div>
-                            </li>
-                            <li class="pt-2">
-                                <a class="uk-accordion-title text-md mx-2 font-semibold" href="#"> <div class="mb-1 text-sm font-medium"> Section 2 </div> Your First webpage  </a>
-                                <div class="uk-accordion-content mt-3 text-base">
-        
-                                    <ul class="course-curriculum-list font-medium">
-                                        <li class=" hover:bg-gray-100 p-2 flex rounded-md">
-                                            <ion-icon name="play-circle" class="text-2xl mr-2"></ion-icon> Headings
-                                            <span class="text-sm ml-auto"> 4 min </span>
-                                        </li>
-                                        <li class=" hover:bg-gray-100 p-2 flex rounded-md">
-                                            <ion-icon name="play-circle" class="text-2xl mr-2"></ion-icon> Paragraphs
-                                            <span class="text-sm ml-auto"> 5 min </span>
-                                        </li>
-                                        <li class=" hover:bg-gray-100 p-2 flex rounded-md">
-                                            <ion-icon name="play-circle" class="text-2xl mr-2"></ion-icon>
-                                            Emphasis and Strong Tag 
-                                            <span class="text-sm ml-auto"> 8 min </span>
-                                        </li>
-                                        <li class=" hover:bg-gray-100 p-2 flex rounded-md">
-                                            <ion-icon name="play-circle" class="text-2xl mr-2"></ion-icon>
-                                            Brain Streak 
-                                            <a href="#trailer-modal" class="bg-gray-200 ml-4 px-2 py-1 rounded-full text-xs" uk-toggle=""> Preview </a>
-                                            <span class="text-sm ml-auto"> 4 min </span>
-                                        </li>
-                                        <li class=" hover:bg-gray-100 p-2 flex rounded-md">
-                                            <ion-icon name="play-circle" class="text-2xl mr-2"></ion-icon>
-                                            Live Preview Feature
-                                            <span class="text-sm ml-auto"> 5 min </span>
-                                        </li>
-                                    </ul>
-        
-                                </div>
-                            </li>
-                            <li class="pt-2">
-                                <a class="uk-accordion-title text-md mx-2 font-semibold" href="#"> <div class="mb-1 text-sm font-medium"> Section 3 </div> Build Complete Webste  </a>
-                                <div class="uk-accordion-content mt-3 text-base">
-        
-                                    <ul class="course-curriculum-list font-medium">
-                                        <li class=" hover:bg-gray-100 p-2 flex rounded-md">
-                                            <ion-icon name="play-circle" class="text-2xl mr-2"></ion-icon> The paragraph tag
-                                            <span class="text-sm ml-auto"> 4 min </span>
-                                        </li>
-                                        <li class=" hover:bg-gray-100 p-2 flex rounded-md">
-                                            <ion-icon name="play-circle" class="text-2xl mr-2"></ion-icon> The break tag
-                                            <span class="text-sm ml-auto"> 5 min </span>
-                                        </li>
-                                        <li class=" hover:bg-gray-100 p-2 flex rounded-md">
-                                            <ion-icon name="play-circle" class="text-2xl mr-2"></ion-icon>
-                                            Headings in HTML
-                                            <span class="text-sm ml-auto"> 8 min </span>
-                                        </li>
-                                        <li class=" hover:bg-gray-100 p-2 flex rounded-md">
-                                            <ion-icon name="play-circle" class="text-2xl mr-2"></ion-icon>
-                                            Bold, Italics Underline 
-                                            <a href="#trailer-modal" class="bg-gray-200 ml-4 px-2 py-1 rounded-full text-xs" uk-toggle=""> Preview </a>
-                                            <span class="text-sm ml-auto"> 4 min </span>
-                                        </li>
-                                    </ul>
-        
                                 </div>
                             </li>
                         </ul>
-                    </div>
-    
-                    <!-- course Faq --> 
-                    <div class="tube-card p-5 lg:p-8" id="faq">
-                            
-                        <h3 class="text-lg font-semibold mb-3 lg:mb-5"> Course Faq </h3>
-                        
-                        <ul uk-accordion="multiple: true" class="divide-y space-y-3">
-                            <li class="bg-gray-100 px-4 py-3 rounded-md uk-open">
-                                <a class="uk-accordion-title font-semibold text-base" href="#"> Html Introduction </a>
-                                <div class="uk-accordion-content mt-3">
-                                    <p> The primary goal of this quick start guide is to introduce you to
-                                        Unreal
-                                        Engine 4`s (UE4) development environment. By the end of this guide,
-                                        you`ll
-                                        know how to set up and develop C++ Projects in UE4. This guide shows
-                                        you
-                                        how
-                                        to create a new Unreal Engine project, add a new C++ class to it,
-                                        compile
-                                        the project, and add an instance of a new class to your level. By
-                                        the
-                                        time
-                                        you reach the end of this guide, you`ll be able to see your
-                                        programmed
-                                        Actor
-                                        floating above a table in the level. </p>
-                                </div>
-                            </li>
-                            <li class="bg-gray-100 px-4 py-3 rounded-md">
-                                <a class="uk-accordion-title font-semibold text-base" href="#"> Your First webpage</a>
-                                <div class="uk-accordion-content mt-3">
-                                    <p> The primary goal of this quick start guide is to introduce you to
-                                        Unreal
-                                        Engine 4`s (UE4) development environment. By the end of this guide,
-                                        you`ll
-                                        know how to set up and develop C++ Projects in UE4. This guide shows
-                                        you
-                                        how
-                                        to create a new Unreal Engine project, add a new C++ class to it,
-                                        compile
-                                        the project, and add an instance of a new class to your level. By
-                                        the
-                                        time
-                                        you reach the end of this guide, you`ll be able to see your
-                                        programmed
-                                        Actor
-                                        floating above a table in the level. </p>
-                                </div>
-                            </li>
-                            <li class="bg-gray-100 px-4 py-3 rounded-md">
-                                <a class="uk-accordion-title font-semibold text-base" href="#"> Some Special Tags </a>
-                                <div class="uk-accordion-content mt-3">
-                                    <p> The primary goal of this quick start guide is to introduce you to
-                                        Unreal
-                                        Engine 4`s (UE4) development environment. By the end of this guide,
-                                        you`ll
-                                        know how to set up and develop C++ Projects in UE4. This guide shows
-                                        you
-                                        how
-                                        to create a new Unreal Engine project, add a new C++ class to it,
-                                        compile
-                                        the project, and add an instance of a new class to your level. By
-                                        the
-                                        time
-                                        you reach the end of this guide, you`ll be able to see your
-                                        programmed
-                                        Actor
-                                        floating above a table in the level. </p>
-                                </div>
-                            </li>
-                            <li class="bg-gray-100 px-4 py-3 rounded-md">
-                                <a class="uk-accordion-title font-semibold text-base" href="#"> Html Introduction </a>
-                                <div class="uk-accordion-content mt-3">
-                                    <p> The primary goal of this quick start guide is to introduce you to
-                                        Unreal
-                                        Engine 4`s (UE4) development environment. By the end of this guide,
-                                        you`ll
-                                        know how to set up and develop C++ Projects in UE4. This guide shows
-                                        you
-                                        how
-                                        to create a new Unreal Engine project, add a new C++ class to it,
-                                        compile
-                                        the project, and add an instance of a new class to your level. By
-                                        the
-                                        time
-                                        you reach the end of this guide, you`ll be able to see your
-                                        programmed
-                                        Actor
-                                        floating above a table in the level. </p>
-                                </div>
-                            </li>
-                        </ul>
-    
                     </div>
     
                     <!-- course Announcement -->
-                    <div  id="announcement" class="tube-card p-5 lg:p-8">
-                        <h3 class="text-xl font-semibold lg:mb-5"> Announcement </h3>
-                        
-                        <div class="flex items-center gap-x-4 mb-5">
-                            <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/avatars/avatar-4.jpg" alt="" class="rounded-full shadow w-12 h-12">
-                            <div>
-                                <h4 class="-mb-1 text-base  font-semibold"> Stella Johnson</h4>
-                                <span class="text-sm"> Instructor <span class="text-gray-500"> 1 year ago </span> </span>
+                    <div id="announcement" class="tube-card p-5 lg:p-8" v-if="course.announcements.length > 0 || isMyCourse">
+                        <div class="flex items-center justify-between mb-5">
+                            <h3 class="text-xl font-semibold"> Announcement </h3>
+                            <a class="button gray" href="#modal-example" uk-toggle v-if="isMycourse">Add Announcement</a>
+                        </div>
+
+                        <div class="space-y-5">
+                            <div v-for="announcement in course.announcements" :key="announcement.id">
+                                <h4 class="font-medium mb-2 text-lg">
+                                    {{ announcement.title }}
+                                </h4>
+                                <p>
+                                    {{ announcement.content }}
+                                </p>
                             </div>
                         </div>
-        
-                        <h4 class="font-medium mb-2 text-lg"> Nam liber tempor cum soluta nobis eleifend option congue imperdiet
-                            doming id quod mazim placerat facer possim assum.</h4>
-                        <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                            voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-                            non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                        <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-                            tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis
-                            nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Nam
-                            liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim
-                            placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
-                            nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad
-                            minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea
-                            commodo consequat.</p>
+                                 
+                        <!-- This is the modal -->
+                        <div id="modal-example" uk-modal>
+                            <div class="uk-modal-body uk-modal-dialog rounded-md shadow-2xl">
+                                <h2 class="uk-modal-title mb-5">Add announcement</h2>
+                                <div class="mb-3">
+                                    <label for="" class="text-sm mb-1">title</label>
+                                    <input type="text" class="with-border" v-model="title" placeholder="e.g. Ready assignments">
+                                </div>
+                                <div>
+                                    <label for="" class="text-sm mb-1">Content</label>
+                                    <textarea name="" id="" cols="30" rows="5" v-model="content" class="with-border p-3"></textarea>
+                                </div>
+                                <div class="uk-modal-footer text-right mt-6 px-0 space-x-1 pb-0 border-transparent">
+                                    <button class="button gray uk-modal-close" type="button">Cancel</button>
+                                    <button class="button" type="button" @click="postAnnouncements()">Save</button>
+                                </div>
+                            </div>
+                        </div>
     
                     </div>
-                 
-                     
-                    <!-- course Reviews -->
-                    <div  id="reviews" class="tube-card p-5">
-                        <h3 class="text-lg font-semibold mb-3"> Reviews (4610) </h3>
-                        
-                        <div class="flex space-x-5 mb-8">
-                            <div class="lg:w-1/4 w-full">
-                                <div class="bg-blue-100 p-6 rounded-md border border-blue-200 text-center shadow-xs">
-                                    <h1 class="leading-none text-6xl"> 4.8</h1>
-                                    <div class="flex justify-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-gray-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                    </div>
-                                    <h5 class="text-lg mb-0 mt-2 text-blue-800"> Course Rating</h5>
-                                </div>
-                            </div>
-                            <div class="w-2/4 hidden lg:flex flex-col justify-center">
-        
-                                <div class="space-y-5">
-                                    <div class="w-full h-3 rounded-lg bg-gray-300 shadow-xs relative">
-                                        <div class="w-11/12 h-3 rounded-lg bg-gray-800"> </div>
-                                    </div>
-                                    <div class="w-full h-3 rounded-lg bg-gray-300 shadow-xs relative">
-                                        <div class="w-4/5 h-3 rounded-lg bg-gray-800"> </div>
-                                    </div>
-                                    <div class="w-full h-3 rounded-lg bg-gray-300 shadow-xs relative">
-                                        <div class="w-3/5 h-3 rounded-lg bg-gray-800"> </div>
-                                    </div>
-                                    <div class="w-full h-3 rounded-lg bg-gray-300 shadow-xs relative">
-                                        <div class="w-3/6 h-3 rounded-lg bg-gray-800"> </div>
-                                    </div>
-                                    <div class="w-full h-3 rounded-lg bg-gray-300 shadow-xs relative">
-                                        <div class="w-1/3 h-3 rounded-lg bg-gray-800"> </div>
-                                    </div>
-                                </div>
-        
-                            </div>
-                            <div class="w-1/4 hidden lg:flex flex-col justify-center">
-                                <div class="space-y-1">
-                                    <div class="flex justify-center items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-orange-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-orange-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-orange-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-orange-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-orange-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <span class="ml-2"> 95 %</span>
-                                    </div>
-                                    <div class="flex justify-center items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-orange-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-orange-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-orange-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-orange-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-gray-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <span class="ml-2"> 85 %</span>
-                                    </div>
-                                    <div class="flex justify-center items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-orange-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-orange-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-orange-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-orange-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-gray-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <span class="ml-2"> 60 %</span>
-                                    </div>
-                                    <div class="flex justify-center items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-orange-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-orange-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-orange-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-orange-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-gray-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <span class="ml-2"> 50 %</span>
-                                    </div>
-                                    <div class="flex justify-center items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-orange-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-orange-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-orange-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-orange-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-gray-400">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <span class="ml-2"> 35 %</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="space-y-4 my-5">
-                
-                            <div class="bg-gray-50 border flex gap-x-4 p-4 relative rounded-md">
-                                <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/avatars/avatar-4.jpg" alt="" class="rounded-full shadow w-12 h-12">
-                                <div class="flex justify-center items-center absolute right-5 top-6 space-x-1 text-yellow-500">
-                                    <ion-icon name="star"></ion-icon>
-                                    <ion-icon name="star"></ion-icon>
-                                    <ion-icon name="star"></ion-icon>
-                                    <ion-icon name="star"></ion-icon>
-                                    <ion-icon name="star"></ion-icon>
-                                </div>
-                                <div>
-                                    <h4 class="text-base m-0 font-semibold"> Stella Johnson</h4>
-                                    <span class="text-gray-700 text-sm"> 14th, April 2021 </span>
-                                    <p class="mt-3 md:ml-0 -ml-16">
-                                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam ut laoreet dolore
-                                        magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
-                                    </p>
-                                </div>
-                            </div>
-                        
-                            <div class="bg-gray-50 border flex gap-x-4 p-4 relative rounded-md">
-                                <div class="flex justify-center items-center absolute right-5 top-6 space-x-1 text-yellow-500">
-                                    <ion-icon name="star"></ion-icon>
-                                    <ion-icon name="star"></ion-icon>
-                                    <ion-icon name="star"></ion-icon>
-                                    <ion-icon name="star"></ion-icon>
-                                    <ion-icon name="star" class="text-gray-300"></ion-icon>
-                                </div>
-                                <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/avatars/avatar-2.jpg" alt="" class="rounded-full shadow w-12 h-12">
-                                <div>
-                                    <h4 class="text-base m-0 font-semibold"> Alex Dolgove</h4>
-                                    <span class="text-gray-700 text-sm"> 16th, May 2021 </span>
-                                    <p class="mt-3 md:ml-0 -ml-16">
-                                        elit, sed diam ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim ipsum dolor sit
-                                        amet, consectetuer adipiscing elit, 
-                                    </p>
-                                </div>
-                            </div>
 
-                            <div class="bg-gray-50 border flex gap-x-4 p-4 relative rounded-md lg:ml-16">
-                                <div class="flex justify-center items-center absolute right-5 top-6 space-x-1 text-yellow-500">
-                                    <ion-icon name="star"></ion-icon>
-                                    <ion-icon name="star"></ion-icon>
-                                    <ion-icon name="star"></ion-icon>
-                                    <ion-icon name="star"></ion-icon>
-                                    <ion-icon name="star" class="text-gray-300"></ion-icon>
-                                </div>
-                                <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/avatars/avatar-3.jpg" alt="" class="rounded-full shadow w-12 h-12">
-                                <div>
-                                    <h4 class="text-base m-0 font-semibold"> Trap Nation</h4>
-                                    <span class="text-gray-700 text-sm"> 16th, May 2021 </span>
-                                    <p class="mt-3 md:ml-0 -ml-16">
-                                        elit, sed diam ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim ipsum dolor sit
-                                        amet, consectetuer adipiscing elit, 
-                                    </p>
-                                </div>
-                            </div>
-                        
-                        </div>
-
-                        <div class="flex justify-center mt-9">
-                            <a href="#" class="bg-gray-50 border hover:bg-gray-100 px-4 py-1.5 rounded-full text-sm">More Comments ..</a>
-                        </div>
-
-                    </div>
 
 
                 </div>
@@ -547,15 +176,28 @@
 export default {
   data() {
     return {
-      course: null
+      course: {
+          user: {},
+          announcements: []
+      },
+      lectures: [],
+      title: '',
+      content: ''
     }
   },
-  mounted () {
-    this.fetchCourse()
+  async mounted () {
+    await this.fetchCourse();
+
+    this.fetchCourseLectures()
+  },
+  computed: {
+    isMyCourse() {
+        return JSON.parse(localStorage.getItem('userId')) == this.course.user.id;
+    },
   },
   methods: {
-    fetchCourse() {
-      this.$http.get('courses/' + this.$route.params.id)
+    async fetchCourse() {
+      await this.$http.get('courses/' + this.$route.params.id)
       .then(res => {
         this.course = res.data
       })
@@ -593,11 +235,37 @@ export default {
         const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
         return  `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+    },
+
+    fetchCourseLectures() {
+        this.$http.get('lectures?' + this.$route.params.id)
+        .then(res => {
+            this.lectures = res.data.docs
+        })
+        .catch(err => {
+            console.error(err); 
+        })
+    },
+
+    postAnnouncements() {
+        this.$http.post('/courses/' + this.$route.params.id + '/announcements', {
+            title: this.title,
+            content: this.content
+        })
+        .then(res => {
+            UIkit.notification({ message: 'Announcement successfully posted.' , pos: 'top-right', status: 'success'  })
+            // close modal
+            document.getElementById('modal-example').classList.remove('uk-open');
+            // clear form
+            this.title = '';
+            this.content = '';
+
+            this.fetchCourse()
+        })
+        .catch(err => {
+            console.error(err); 
+        })
     }
   },
 }
 </script>
-
-<style>
-
-</style>
