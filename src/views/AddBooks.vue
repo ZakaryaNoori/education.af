@@ -28,8 +28,13 @@
                 <p class="text-sm text-red-500 mt-1">{{ errors.publishDate }}</p>
               </div>
               <div>
+                <label for="previewImage" class="text-sm mb-0">Preview Image</label>
+                <input type="file" class="with-border" @change="uploadFile('previewImage')" ref="previewImage">
+                <p class="text-sm text-red-500 mt-1">{{ errors.previewImage }}</p>
+              </div>
+              <div>
                 <label for="attachment" class="text-sm mb-0">Attachment</label>
-                <input type="file" class="with-border" @change="uploadFile()" ref="file">
+                <input type="file" class="with-border" @change="uploadFile('attachment')" ref="attachment">
                 <p class="text-sm text-red-500 mt-1">{{ errors.attachment }}</p>
               </div>
               <div>
@@ -52,7 +57,8 @@ export default {
         author: '',
         description: '',
         publishDate: '',
-        attachment: null
+        attachment: null,
+        previewImage: null
       }
     }
   },
@@ -69,13 +75,13 @@ export default {
       })
     },
 
-    uploadFile(target) {
+    uploadFile(field) {
       const formData = new FormData();
-      formData.append('file', this.$refs.file.files[0]);
+      formData.append('file', this.$refs[field].files[0]);
       
       this.$http.post('/attachments',formData)
       .then(res => {
-        this.book.attachment = res.data._id;
+        this.book[field] = res.data._id;
       })
       .catch(err => {
         console.error(err)
