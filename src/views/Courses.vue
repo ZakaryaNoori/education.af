@@ -336,7 +336,13 @@ export default {
 
   methods: {
     fetchCourses() {
-      this.$http.get('courses')
+        let url = 'courses';
+
+      if (this.$route.query.category) {
+        url = `courses?category=${this.$route.query.category}`;
+      }
+
+      this.$http.get(url)
           .then(response => {
             this.loading = false;
             this.courses = response.data.docs
