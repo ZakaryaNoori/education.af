@@ -1,7 +1,7 @@
 <template>
   <!-- Main Contents -->
         <div class="main_content">
-            <div class="container p-0">
+            <div v-if="book" class="container p-0">
  
                 <div class="lg:flex lg:space-x-10 bg-white rounded-md shadow max-w-3x  mx-auto md:p-8 p-3">
                     <div class="lg:w-1/3 w-full">
@@ -9,18 +9,18 @@
                         <div uk-sticky="offset: 91;bottom: true">
                             <div uk-lightbox>
                                 <a href="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/book/book-description.jpg" data-caption="Image Caption">
-                                    <img alt="" src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/book/book-description.jpg" class="shadow-lg rounded-md w-32 md:w-full" style="cursor: zoom-in; ">
+                                    <img alt="" :src="API_URL + '/attachments/' + book.previewImage" class="shadow-lg rounded-md w-32 md:w-full" style="cursor: zoom-in; ">
                                 </a> 
                             </div>
                             <div>
                                 <ul class="my-5 text-sm space-y-2">
-                                    <li> Visited 120 </li>                                         
-                                    <li> Publish time 12/12/2018</li>
-                                    <li> Downloaded 120 </li>
+                                    <li>Author: {{ book.author }}</li>
+                                    <li> Visited: 120 </li>                                         
+                                    <li> Publish time: {{ book.publishDate.split('T')[0] }}</li>
+                                    <li> Downloaded: 120 </li>
                                 </ul>
                                 <div class="grid grid-cols-2 gap-2">
-                                    <a href="#" class="hover:text-gray-800 bg-gray-300 font-semibold inline-flex items-center justify-center px-4 py-2 rounded-md text-center w-full"> <i class="uil-book-open mr-1 md:block hidden"></i> Read </a>
-                                    <a href="#" class="bg-gray-600 font-semibold hover:bg-gray-700 inline-flex items-center justify-center px-4 py-2 rounded-md text-center text-white w-full"> <i class="uil-shopping-basket mr-1 md:block hidden"></i> Buy </a>
+                                    <a @click="download" class="cursor-pointer hover:text-gray-800 bg-gray-300 font-semibold inline-flex items-center justify-center px-4 py-2 rounded-md text-center w-full"> <ion-icon name="download-outline"></ion-icon> Download </a>
                                 </div>
                             </div>
     
@@ -31,35 +31,16 @@
                         
                         <div> 
 
-                            <h2 class="font-semibold mb-3 text-xl lg:text-2xl">Learn The Basic Of VUE JS .</h2>
+                            <h2 class="font-semibold mb-3 text-xl lg:text-2xl">{{ book.name }} </h2>
                             <hr class="mb-5">
                             <h4 class="font-semibold mb-2 text-base"> Description </h4>   
                             <div class="space-y-4">
   
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-                                    tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam,
-                                    quis nostrud exerci tation ullamcorper</p>
-                                <p>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod
-                                    mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing
-                                    elit, sed diam nonummy nibh euismod quis nostrud exerci tation ullamcorper tincidunt ut
-                                    laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud
-                                    exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
-                                <p>mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing
-                                    elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
-                                    volutpat. Ut wisi enim ad minim veniam,suscipit lobortis nisl ut aliquip ex ea commodo
-                                    consequat</p>
-                                <p class="text-lg font-semibold"> Assum consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt</p>
-                                <p>Diam nonummy nibh euismod erat volutpat. Ut wisi enim ad minim veniam, quis nostrud
-                                    exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat</p>
-                                <p>laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam</p>
-                                <h4>Book Information</h4>
-                                <p class="mb-0"><strong>Page Count</strong>: 118</p>
-                                <p class="mt-0"><strong>Word Count</strong>: 15872</p>
+                                {{ book.description }}
                                 
                             </div>
                               
                         </div>
-
                                        
                     </div>
                     
@@ -160,7 +141,39 @@
 
 <script>
 export default {
+data() {
+    return {
+      book: null,
+      loading: true,
+      API_URL: 'http://localhost:3000/api/'
+    }
+  },
+  mounted () {
+    this.fetchBook();
+  },
 
+  methods: {
+    fetchBook() {
+      this.$http.get(`books/${this.$route.params.id}`)
+          .then(response => {
+            this.loading = false;
+            this.book = response.data
+          })
+    },
+
+    download() {
+        this.$http.get(`attachments/${this.book.attachment._id}`, { responseType: 'blob' })
+            .then(response => {
+                const blob = new Blob([response.data], { type: this.book.attachment.mime });
+                const link = document.createElement('a');
+
+                link.href = URL.createObjectURL(blob);
+                link.download = this.book.attachment.originalName;
+                link.click();
+                URL.revokeObjectURL(link.href);
+            })
+    }
+  },
 }
 </script>
 
