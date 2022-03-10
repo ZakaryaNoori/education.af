@@ -53,6 +53,20 @@
                       </div>
                   </div>
 
+                  <label class="mb-0" for=""> Select Account type </label>
+                    <div class="grid grid-cols-2 gap-3 text-sm">
+                        <div
+                            :class="user.role == 'Instructor' ? 'bg-indigo-800 text-white' : 'text-indigo-800'"
+                            class="border border-indigo-100 rounded p-2 text-center cursor-pointer hover:bg-indigo-800 hover:text-white transition-all duration-300" @click="selectType('Instructor')">
+                            Instructor
+                        </div>
+                        <div
+                            :class="user.role == 'Student' ? 'bg-indigo-800 text-white' : 'text--indigo-100'"
+                            class="border border-indigo-100 rounded p-2 text-center cursor-pointer hover:bg-indigo-800 hover:text-white transition-all duration-300" @click="selectType('Student')">
+                            Student
+                        </div>
+                    </div>
+
                   <!-- <div class="checkbox">
                       <input type="checkbox" id="chekcbox1" checked="">
                       <label for="chekcbox1"><span class="checkbox-icon"></span> I agree to the <a href="pages-terms.html" target="_blank" class="uk-text-bold uk-text-small uk-link-reset"> Terms and Conditions </a>
@@ -83,7 +97,7 @@ export default {
                 email: '',
                 password: '',
                 phone: '',
-                role: ''
+                role: 'Student'
             },
             errors: []
         }
@@ -100,6 +114,10 @@ export default {
             .catch(err => {
                 this.errors = err.response.data
             })
+        },
+
+        selectType(type) {
+            this.user.role = type;
         }
     },
 }
