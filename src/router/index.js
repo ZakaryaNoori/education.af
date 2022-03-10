@@ -47,6 +47,21 @@ const routes = [
     path: '/my-courses',
     name: 'my-courses',
     component: () => import(/* webpackChunkName: "about" */ '../views/MyCourses.vue')
+  },
+  {
+    path: '/add-lecture/:id',
+    name: 'add-lecture',
+    component: () => import(/* webpackChunkName: "about" */ '../views/AddLecture.vue')
+  },
+  {
+    path: '/books',
+    name: 'books',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Books.vue')
+  },
+  {
+    path: '/add-books',
+    name: 'add-books',
+    component: () => import(/* webpackChunkName: "about" */ '../views/AddBooks.vue')
   }
 ]
 

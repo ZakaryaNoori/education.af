@@ -22,6 +22,16 @@ AxiosInstance.interceptors.request.use(async (config) => {
   return config;
 });
 
+Vue.directive('text-terminate', {
+  bind: function (el, binding) {
+    const text = el.innerText.trim();
+
+    if (text.length > binding.value) {
+      return el.innerText = text.slice(0, binding.value) + "...";
+    }
+  }
+});
+
 Vue.config.ignoredElements = [/^ion-/]
 
 Vue.prototype.$http = AxiosInstance
