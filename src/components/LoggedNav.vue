@@ -107,14 +107,17 @@
         
                          <!-- profile -->
                         <a href="#">
-                            <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/avatars/placeholder.png" class="header_widgets_avatar" alt="">
+                            <img v-if="user && user.profilePic" class="header_widgets_avatar" :src="'http://localhost:3000/api/attachments/' + user.profilePic" alt="profile image">
+                            <img src="../assets/placeholder.png" class="header_widgets_avatar" alt="" v-else>
                         </a>
                         <div uk-drop="mode: click;offset:5" class="header_dropdown profile_dropdown">
                             <ul>   
                                 <li>
                                     <a href="#" class="user">
                                         <div class="user_avatar">
-                                            <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/avatars/avatar-2.jpg" alt="">
+                                            <img v-if="user && user.profilePic" :src="'http://localhost:3000/api/attachments/' + user.profilePic" alt="profile image">
+                                            <img src="../assets/placeholder.png" alt="" v-else>
+                                            <!-- <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/avatars/avatar-2.jpg" alt=""> -->
                                         </div>
                                         <div class="user_name">
                                             <div> {{ user && user.name }} </div>
