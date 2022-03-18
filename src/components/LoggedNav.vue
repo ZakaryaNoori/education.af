@@ -34,40 +34,14 @@
      
                     <!-- Header search box  -->
                     <div class="header_search"><i class="uil-search-alt"></i> 
-                        <input value="" type="text" class="form-control" placeholder=" Quick search for anything.." autocomplete="off">
+                        <input value="" type="text" class="form-control" placeholder=" Quick search for courses.." autocomplete="off" @input="searchCourses($event)">
                         <div uk-drop="mode: click;offset:10" class="header_search_dropdown">
-                               
-                            <h4 class="search_title"> Recently </h4>
+                            <h4 class="search_title mb-2"> Courses </h4>
                             <ul>
-                                <li> 
-                                    <a href="#">  
-                                        <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/avatars/avatar-1.jpg" alt="" class="list-avatar">
-                                        <div class="list-name">  Erica Jones </div>
-                                    </a> 
-                                </li> 
-                                <li> 
-                                    <a href="#">  
-                                        <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/avatars/avatar-2.jpg" alt="" class="list-avatar">
-                                        <div class="list-name">  Coffee  Addicts </div>
-                                    </a> 
-                                </li>
-                                <li> 
-                                    <a href="#">  
-                                        <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/avatars/avatar-3.jpg" alt="" class="list-avatar">
-                                        <div class="list-name"> Mountain Riders </div>
-                                    </a> 
-                                </li>
-                                <li> 
-                                    <a href="#">  
-                                        <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/avatars/avatar-4.jpg" alt="" class="list-avatar">
-                                        <div class="list-name"> Property Rent And Sale  </div>
-                                    </a> 
-                                </li>
-                                <li> 
-                                    <a href="#">  
-                                        <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/avatars/avatar-5.jpg" alt="" class="list-avatar">
-                                        <div class="list-name">  Erica Jones </div>
-                                    </a> 
+                                <li v-for="course in courses" :key="course.id"> 
+                                    <router-link :to="`/courses/${course._id}`">  
+                                        <div class="list-name px-2 py-1">  {{ course.title }} </div>
+                                    </router-link> 
                                 </li>
                             </ul>
     
@@ -105,7 +79,7 @@
                             </div>
                         </div>
         
-                         <!-- profile -->
+                        <!-- profile -->
                         <a href="#">
                             <img v-if="user && user.profilePic" class="header_widgets_avatar" :src="'http://localhost:3000/api/attachments/' + user.profilePic" alt="profile image">
                             <img src="../assets/placeholder.png" class="header_widgets_avatar" alt="" v-else>
@@ -137,10 +111,10 @@
                                     <hr>
                                 </li>
                                 <li> 
-                                    <a href="#">
+                                    <router-link to="/settings">
                                         <ion-icon name="person-circle-outline" class="is-icon"></ion-icon>
-                                         My Account 
-                                    </a>
+                                        My Account 
+                                    </router-link>
                                 </li>
                                 <li> 
                                     <router-link to="/courses">
@@ -196,7 +170,8 @@
 export default {
     data() {
         return {
-            user: null
+            user: null,
+            courses: [],
         }
     },
     methods: {
@@ -207,6 +182,17 @@ export default {
             // redirect to login page
             this.$router.push('/login')
         },
+
+        searchCourses(e) {
+            if (e.target.value.length > 2) {
+                this.$http.get('http://localhost:3000/api/courses?title=' + e.target.value).then(response => {
+                    this.courses = response.data.docs
+                    console.log(response.data.docs)
+                })
+            } else {
+                this.courses = []
+            }
+        }
     },
 
     computed: {

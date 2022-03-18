@@ -41,7 +41,14 @@ const routes = [
   {
     path: '/courses/:id/lectures',
     name: 'lectures',
-    component: () => import(/* webpackChunkName: "about" */ '../views/CourseWatch.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/CourseWatch.vue'),
+    children: [
+      {
+        path: ':lectureId',
+        name: 'lecture',
+        component: () => import(/* webpackChunkName: "about" */ '../views/Lecture.vue')
+      }
+    ]
   },
   {
     path: '/create-course',
@@ -52,6 +59,11 @@ const routes = [
     path: '/my-courses',
     name: 'my-courses',
     component: () => import(/* webpackChunkName: "about" */ '../views/MyCourses.vue')
+  },
+  {
+    path: '/lecture',
+    name: 'lecture',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Lecture.vue')
   },
   {
     path: '/add-lecture/:id',
@@ -78,6 +90,31 @@ const routes = [
     name: 'categories',
     component: () => import(/* webpackChunkName: "about" */ '../views/Categories.vue')
   },
+  {
+    path: '/faq',
+    name: 'faq',
+    component: () => import(/* webpackChunkName: "about" */ '../views/FAQ.vue')
+  },
+  {
+    path: '/terms',
+    name: 'terms',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Terms.vue')
+  },
+  {
+    path: '/privacy',
+    name: 'privacy',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Privacy.vue')
+  },
+  {
+    path: '/settings',
+    name: 'settings',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Settings.vue')
+  },
+  {
+    path: '/dashboard',
+    name: 'dashboard',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Dashboard.vue')
+  }
 ]
 
 const router = new VueRouter({

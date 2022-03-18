@@ -43,77 +43,10 @@
             
             <div class="container">
 
-                <!--  course feature -->
-                <div class="sm:my-4 my-3 flex items-end justify-between pt-3">
-                  <h2 class="text-2xl font-semibold"> Featured Classes   </h2> 
-                </div> 
-               
-                <div class="relative -mt-3" uk-slider="finite: true">
-
-                    <div class="uk-slider-container px-1 py-3">
-                        <ul class="uk-slider-items uk-child-width-1-1@m uk-grid">
-                            <li>
-                               
-                                <div class="bg-white shadow-sm rounded-lg uk-transition-toggle md:flex">
-                                    <div class="md:w-5/12 md:h-60 h-40 overflow-hidden rounded-l-lg relative">
-                                        <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/courses/img-6.jpg" alt="" class="w-full h-full absolute inset-0 object-cover">
-                                        <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/icon-play.svg" class="w-16 h-16 uk-position-center uk-transition-fade" alt="">
-                                    </div>
-                                    <div class="flex-1 md:p-6 p-4">
-                                        <div class="font-semibold line-clamp-2 md:text-xl md:leading-relaxed">Learn How to Build Responsive Web Design Essentials HTML5 CSS3 and Bootstrap </div>
-                                        <div class="mt-2 md:block hidden">
-                                            <p class="line-clamp-2">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam</p>
-                                        </div>
-                                        <div class="font-semibold mt-3"> John Michael </div>
-                                        <div class="mt-1 flex items-center justify-between">
-                                            <div class="flex space-x-2 items-center text-sm pt-2">
-                                                <div> 13 hours </div>
-                                                <div>·</div>
-                                                <div> 32 lectures </div>
-                                            </div>
-                                            <div class="text-lg font-semibold"> $14.99 </div>
-                                        </div>
-                                    </div> 
-                                </div>
-
-                            </li>
-                            <li>
-
-                                <div class="bg-white shadow-sm rounded-lg uk-transition-toggle md:flex">
-                                    <div class="md:w-5/12 md:h-60 h-40 overflow-hidden rounded-l-lg relative">
-                                        <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/courses/img-1.jpg" alt="" class="w-full h-full absolute inset-0 object-cover">
-                                        <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/icon-play.svg" class="w-16 h-16 uk-position-center uk-transition-fade" alt="">
-                                    </div>
-                                    <div class="flex-1 md:p-6 p-4">
-                                        <div class="font-semibold line-clamp-2 md:text-xl md:leading-relaxed"> Learn JavaScript and Express to become a professional JavaScript developer. </div>
-                                        <div class="mt-2 md:block hidden">
-                                            <p class="line-clamp-2">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam</p>
-                                        </div>
-                                        <div class="font-semibold mt-3"> John Michael </div>
-                                        <div class="mt-1 flex items-center justify-between">
-                                            <div class="flex space-x-2 items-center text-sm pt-2">
-                                                <div> 13 hours </div>
-                                                <div>·</div>
-                                                <div> 32 lectures </div>
-                                            </div>
-                                            <div class="text-lg font-semibold"> $14.99 </div>
-                                        </div>
-                                    </div> 
-                                </div>
-                                 
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <a class="absolute bg-white uk-position-center-left -ml-3 flex items-center justify-center p-2 rounded-full shadow-md text-xl w-11 h-11 z-10 dark:bg-gray-800 dark:text-white" href="#" uk-slider-item="previous"> <ion-icon name="chevron-back-outline"></ion-icon></a>
-                    <a class="absolute bg-white uk-position-center-right -mr-3 flex items-center justify-center p-2 rounded-full shadow-md text-xl w-11 h-11 z-10 dark:bg-gray-800 dark:text-white" href="#" uk-slider-item="next"> <ion-icon name="chevron-forward-outline"></ion-icon></a>
-
-                </div>
-
                 <!--  slider courses --> 
                 <div class="sm:my-4 my-3 flex items-end justify-between pt-3">
-                      <h2 class="text-2xl font-semibold"> Popular Classes  </h2>
-                  <a href="#" class="text-blue-500 sm:block hidden"> See all </a>
+                      <h2 class="text-2xl font-semibold"> Popular Courses  </h2>
+                  <router-link to="/courses" class="text-blue-500 sm:block hidden"> See all </router-link>
                 </div> 
 
                 <div class="mt-3">
@@ -131,100 +64,22 @@
 
                                 <ul class="uk-slider-items uk-child-width-1-3@m uk-child-width-1-2@s uk-grid-small uk-grid">
 
-                                    <li>
+                                    <li v-for="course in courses" :key="course.id">
 
                                         <a href="course-intro.html" class="uk-link-reset">
                                             <div class="card uk-transition-toggle">
                                                 <div class="card-media h-40">
                                                     <div class="card-media-overly"></div>
-                                                    <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/courses/img-1.jpg" alt="" class="">
+                                                    <img :src="`http://localhost:3000/api/attachments/${course.image}`" alt="" class="">
                                                     <span class="icon-play"></span>
                                                 </div>
                                                 <div class="card-body p-4">
-                                                    <div class="font-semibold line-clamp-2"> Learn JavaScript and Express to become a professional JavaScript developer. </div>
+                                                    <div class="font-semibold line-clamp-2"> {{ course.title }} </div>
                                                     <div class="flex space-x-2 items-center text-sm pt-3">
-                                                        <div> 13 hours  </div>
-                                                        <div> · </div>
-                                                        <div> 32 lectures </div>
+                                                        <div> {{ course.lecturesCount }} lectures </div>
                                                     </div>
                                                     <div class="pt-1 flex items-center justify-between">
-                                                        <div class="text-sm font-medium"> John Michael </div>
-                                                        <div class="text-lg font-semibold"> $14.99 </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-
-                                    </li>
-                                    <li>
-
-                                        <a href="course-intro.html" class="uk-link-reset">
-                                            <div class="card uk-transition-toggle">
-                                                <div class="card-media h-40">
-                                                    <div class="card-media-overly"></div>
-                                                    <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/courses/img-2.jpg" alt="" class="">
-                                                    <span class="icon-play"></span>
-                                                </div>
-                                                <div class="card-body p-4">
-                                                    <div class="font-semibold line-clamp-2">Learn Angular Fundamentals From beginning to advance </div>
-                                                    <div class="flex space-x-2 items-center text-sm pt-3">
-                                                        <div>  26 hours  </div>
-                                                        <div>·</div>
-                                                        <div> 26 lectures </div>
-                                                    </div>
-                                                    <div class="pt-1 flex items-center justify-between">
-                                                        <div class="text-sm font-medium"> Stella Johnson </div>
-                                                        <div class="text-lg font-semibold"> $18.99  </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-
-                                    </li>
-                                    <li>
-
-                                        <a href="course-intro.html" class="uk-link-reset">
-                                            <div class="card uk-transition-toggle">
-                                                <div class="card-media h-40">
-                                                    <div class="card-media-overly"></div>
-                                                    <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/courses/img-3.jpg" alt="" class="">
-                                                    <span class="icon-play"></span>
-                                                </div>
-                                                <div class="card-body p-4">
-                                                    <div class="font-semibold line-clamp-2">Responsive Web Design Essentials HTML5 CSS3 Bootstrap </div>
-                                                    <div class="flex space-x-2 items-center text-sm pt-3">
-                                                        <div>  18 hours  </div>
-                                                        <div>·</div>
-                                                        <div> 42 lectures </div>
-                                                    </div>
-                                                    <div class="pt-1 flex items-center justify-between">
-                                                        <div class="text-sm font-medium"> Monroe Parker </div>
-                                                        <div class="text-lg font-semibold"> $11.99 </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-
-                                    </li>
-                                    <li>
-
-                                        <a href="course-intro.html" class="uk-link-reset">
-                                            <div class="card uk-transition-toggle">
-                                                <div class="card-media h-40">
-                                                    <div class="card-media-overly"></div>
-                                                    <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/courses/img-1.jpg" alt="" class="">
-                                                    <span class="icon-play"></span>
-                                                </div>
-                                                <div class="card-body p-4">
-                                                    <div class="font-semibold line-clamp-2"> Learn JavaScript and Express to become a professional JavaScript developer. </div>
-                                                    <div class="flex space-x-2 items-center text-sm pt-3">
-                                                        <div> 32 hours  </div>
-                                                        <div>·</div>
-                                                        <div>  lec 4 </div>
-                                                    </div>
-                                                    <div class="pt-1 flex items-center justify-between">
-                                                        <div class="text-sm font-medium"> Jesse Stevens </div>
-                                                        <div class="text-lg font-semibold"> $29.99 </div>
+                                                        <div class="text-sm font-medium"> {{ course.user.name }} </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -248,67 +103,19 @@
                 <!--  books  --> 
                 <div class="sm:my-4 my-3 flex items-end justify-between pt-3">
                       <h2 class="text-2xl font-semibold"> Latest Books </h2>
-                  <a href="#" class="text-blue-500 sm:block hidden"> See all </a>
+                  <router-link to="/books" class="text-blue-500 sm:block hidden"> See all </router-link>
                 </div> 
 
                 <div class="relative" uk-slider="finite: true">
                     <div class="uk-slider-container px-1 py-3">
                         <ul
                             class="uk-slider-items uk-child-width-1-5@m uk-child-width-1-3@s uk-child-width-1-2 uk-grid-small uk-grid text-sm font-medium text-center">
-                            <li>
+                            <li v-for="book in books" :key="book.id">
                                 <div class="card">
-                                    <a href="book-description.html">
-                                        <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/book/book4.jpg" alt="" class="w-full h-52 object-cover">
-                                        <div class="p-3 truncate">HTML Breaker</div>
-                                    </a>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="card">
-                                    <a href="book-description.html">
-                                        <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/book/book5.jpg" alt="" class="w-full h-52 object-cover">
-                                        <div class="p-3 truncate"> CSS Master </div>
-                                    </a>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="card">
-                                    <a href="book-description.html">
-                                        <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/book/book1.jpg" alt="" class="w-full h-52 object-cover">
-                                        <div class="p-3 truncate"> Vue.js Basics </div>
-                                    </a>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="card">
-                                    <a href="book-description.html">
-                                        <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/book/book2.jpg" alt="" class="w-full h-52 object-cover">
-                                        <div class="p-3 truncate"> HTML5 & CSS3 </div>
-                                    </a>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="card">
-                                    <a href="book-description.html">
-                                        <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/book/book3.jpg" alt="" class="w-full h-52 object-cover">
-                                        <div class="p-3 truncate"> Learn CSS </div>
-                                    </a>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="card">
-                                    <a href="book-description.html">
-                                        <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/book/book4.jpg" alt="" class="w-full h-52 object-cover">
-                                        <div class="p-3 truncate">HTML Breaker</div>
-                                    </a>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="card">
-                                    <a href="book-description.html">
-                                        <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/book/book5.jpg" alt="" class="w-full h-52 object-cover">
-                                        <div class="p-3 truncate"> CSS Master </div>
-                                    </a>
+                                    <router-link :to="`/books/${book._id}`">
+                                        <img :src="`http://localhost:3000/api/attachments/${book.previewImage}`" alt="" class="w-full h-52 object-cover">
+                                        <div class="p-3 truncate">{{ book.name }}</div>
+                                    </router-link>
                                 </div>
                             </li>
                         </ul>
@@ -320,85 +127,6 @@
                 
                     </div>
                 </div>
-
-                <!--  episcodes  -->
-                <!-- this is user toggle media to remove unwanted class for small devices more check docs uikit on https://getuikit.com/docs/toggle. -->
-                <div class="tube-card p-4 mt-3" uk-toggle="cls: tube-card p-4; mode: media; media: 640">
-  
-                    <h4 class="py-3 px-5 border-b font-semibold text-grey-700 -mx-4 -mt-3 mb-4"> Latest Episodes </h4>
-  
-                    <div class="relative -mx-1" uk-slider="finite: true">
-                
-                          <div class="uk-slider-container md:px-1 px-2 py-3">
-                            <ul class="uk-slider-items uk-child-width-1-3@m uk-child-width-1-2 uk-grid-small uk-grid">
-                                <li>
-                                    <a href="episodes-watch.html">
-                                        <div class="w-full md:h-40 h-28 overflow-hidden rounded-lg relative">
-                                            <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/episodes/img-2.jpg" alt="" class="w-full h-full absolute inset-0 object-cover">
-                                            <span
-                                                class="absolute bottom-2 right-2 px-2 py-1 text-xs font-semibold bg-black bg-opacity-50 text-white rounded">
-                                                12:21</span>
-                                            <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/icon-play.svg" class="w-12 h-12 uk-position-center" alt="">
-                                        </div>
-                                    </a>
-                                    <div class="pt-3">
-                                        <a href="episodes-watch.html" class="font-semibold line-clamp-2">  The PHP Singleton class  </a>
-                                        <p class="text-sm pt-1"> By <a href="#"> Stella Johnson  </a> </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <a href="episodes-watch.html">
-                                        <div class="w-full md:h-40 h-28 overflow-hidden rounded-lg relative">
-                                            <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/episodes/img-4.jpg" alt="" class="w-full h-full absolute inset-0 object-cover">
-                                            <span class="absolute bottom-2 right-2 px-2 py-1 text-xs font-semibold bg-black bg-opacity-50 text-white rounded">
-                                                12:21</span>
-                                            <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/icon-play.svg" class="w-12 h-12 uk-position-center" alt="">
-                                        </div>
-                                    </a>
-                                    <div class="pt-3">
-                                        <a href="episodes-watch.html" class="font-semibold line-clamp-2">  Larafel $ fliepond   </a>
-                                        <p href="episodes-watch.html" class="text-sm pt-1"> By <a href="#"> Jesse Stevens </a> </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <a href="episodes-watch.html">
-                                        <div class="w-full md:h-40 h-28 overflow-hidden rounded-lg relative">
-                                            <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/episodes/img-1.jpg" alt="" class="w-full h-full absolute inset-0 object-cover">
-                                            <span class="absolute bottom-2 right-2 px-2 py-1 text-xs font-semibold bg-black bg-opacity-50 text-white rounded">
-                                                12:21</span>
-                                            <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/icon-play.svg" class="w-12 h-12 uk-position-center" alt="">
-                                        </div>
-                                    </a>
-                                    <div class="pt-3">
-                                        <a href="episodes-watch.html" class="font-semibold line-clamp-2">  Creating a Laravel Package   </a>
-                                        <p class="text-sm pt-1"> By <a href="#"> John Michael </a> </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <a href="episodes-watch.html">
-                                        <div class="w-full md:h-40 h-28 overflow-hidden rounded-lg relative">
-                                            <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/episodes/img-3.jpg" alt="" class="w-full h-full absolute inset-0 object-cover">
-                                            <span class="absolute bottom-2 right-2 px-2 py-1 text-xs font-semibold bg-black bg-opacity-50 text-white rounded">
-                                                12:21</span>
-                                            <img src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/icon-play.svg" class="w-12 h-12 uk-position-center" alt="">
-                                        </div>
-                                    </a>
-                                    <div class="pt-3">
-                                        <a href="episodes-watch.html" class="font-semibold line-clamp-2">  Creating sticky in HTML   </a>
-                                        <p class="text-sm pt-1"> By <a href="#"> Monroe Parker </a> </p>
-                                    </div>
-                                </li> 
-                            </ul>
-                
-                            <a class="absolute bg-white top-16 flex items-center justify-center p-2 -left-4 rounded-full shadow-md text-xl w-9 z-10 dark:bg-gray-800 dark:text-white" href="#" uk-slider-item="previous">  <ion-icon name="chevron-back-outline"></ion-icon> </a>
-                            <a class="absolute bg-white top-16 flex items-center justify-center p-2 -right-4 rounded-full shadow-md text-xl w-9 z-10 dark:bg-gray-800 dark:text-white" href="#" uk-slider-item="next"> <ion-icon name="chevron-forward-outline"></ion-icon></a>
-                
-                          </div>
-                
-                    </div>
-  
-                </div>
-               
 
             </div>
             
@@ -427,17 +155,37 @@
 
 export default {
   name: 'HomeView',
+  data() {
+      return {
+        courses: [],
+        books: [],
+      }
+  },
   mounted () {
     this.getPopularClasses();
+    this.getBooks();
   },
 
   methods: {
       getPopularClasses() {
-        //   this.$http.get('courses')
-        //   .then(response => {
-        //       console.log(response)
-        //   })
-      }
+        this.$http.get('/courses')
+        .then(response => {
+            this.courses = response.data.docs;
+        })
+        .catch(error => {
+          console.log(error);
+        })
+      },
+
+      getBooks() {
+        this.$http.get('/books')
+        .then(response => {
+            this.books = response.data.docs;
+        })
+        .catch(error => {
+          console.log(error);
+        })
+      },
   },
 }
 </script>

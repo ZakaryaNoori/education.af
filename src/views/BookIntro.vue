@@ -7,20 +7,20 @@
                     <div class="lg:w-1/3 w-full">
 
                         <div uk-sticky="offset: 91;bottom: true">
-                            <div uk-lightbox>
-                                <a href="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/book/book-description.jpg" data-caption="Image Caption">
-                                    <img alt="" :src="API_URL + '/attachments/' + book.previewImage" class="shadow-lg rounded-md w-32 md:w-full" style="cursor: zoom-in; ">
+                            <div>
+                                <a>
+                                    <img alt="" :src="API_URL + '/attachments/' + book.previewImage" class="shadow-lg rounded-md w-32 md:w-full">
                                 </a> 
                             </div>
                             <div>
-                                <ul class="my-5 text-sm space-y-2">
-                                    <li>Author: {{ book.author }}</li>
-                                    <li> Visited: 120 </li>                                         
-                                    <li> Publish time: {{ book.publishDate.split('T')[0] }}</li>
-                                    <li> Downloaded: 120 </li>
+                                <ul class="my-5 space-y-2">
+                                    <li><strong>Author:</strong> {{ book.author }}</li>
+                                    <!-- <li> Visited: 120 </li>                                          -->
+                                    <li> <strong>Publish time:</strong> {{ book.publishDate.split('T')[0] }}</li>
+                                    <!-- <li> Downloaded: 120 </li> -->
                                 </ul>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <a @click="download" class="cursor-pointer hover:text-gray-800 bg-gray-300 font-semibold inline-flex items-center justify-center px-4 py-2 rounded-md text-center w-full"> <ion-icon name="download-outline"></ion-icon> Download </a>
+                                <div>
+                                    <a @click="download" class="button gray flex items-center gap-3"> <ion-icon name="download-outline" role="img" class="text-lg"></ion-icon> Download </a>
                                 </div>
                             </div>
     
@@ -35,9 +35,7 @@
                             <hr class="mb-5">
                             <h4 class="font-semibold mb-2 text-base"> Description </h4>   
                             <div class="space-y-4">
-  
                                 {{ book.description }}
-                                
                             </div>
                               
                         </div>

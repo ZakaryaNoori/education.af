@@ -96,94 +96,25 @@
             <div>
               <h2 class="text-xl font-semibold">Top Books</h2>
             </div>
-            <a href="#" class="text-blue-500"> See all </a>
           </div>
 
           <div class="space-y-7 mt-6">
             <div
+              v-for="book in books"
+              :key="book.id"
               class="p-3 bg-white shadow rounded-md flex items-center space-x-3"
             >
               <img
-                src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/book/book1.jpg"
-                class="w-20 h-24 rounded-lg -mt-7 shadow-md"
+                :src="`http://localhost:3000/api/attachments/${book.previewImage}`"
+                class="w-20 h-24 rounded-lg -mt-7 shadow-md object-contain border"
                 alt=""
               />
               <div class="flex-1">
-                <div class="font-semibold">Vue.js Basics</div>
-                <div class="text-sm">John smith</div>
+                <div class="font-semibold">{{ book.name }}</div>
+                <div class="text-sm">{{ book.author }}</div>
               </div>
-              <a href="#">
-                <ion-icon
-                  name="download-outline"
-                  class="text-2xl text-gray-600"
-                ></ion-icon>
-              </a>
-            </div>
-
-            <div
-              class="p-3 bg-white shadow rounded-md flex items-center space-x-3"
-            >
-              <img
-                src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/book/book2.jpg"
-                class="w-20 h-24 rounded-lg -mt-7 shadow-md"
-                alt=""
-              />
-              <div class="flex-1">
-                <div class="font-semibold">HTML5 & CSS3</div>
-                <div class="text-sm">John smith</div>
-              </div>
-              <a href="#">
-                <ion-icon
-                  name="download-outline"
-                  class="text-2xl text-gray-600"
-                ></ion-icon>
-              </a>
-            </div>
-
-            <div
-              class="p-3 bg-white shadow rounded-md flex items-center space-x-3"
-            >
-              <img
-                src="http://demo.foxthemes.net/courseplus-v4.3.1/assets/images/book/book3.jpg"
-                class="w-20 h-24 rounded-lg -mt-7 shadow-md"
-                alt=""
-              />
-              <div class="flex-1">
-                <div class="font-semibold">Learn CSS</div>
-                <div class="text-sm">John smith</div>
-              </div>
-              <a href="#">
-                <ion-icon
-                  name="download-outline"
-                  class="text-2xl text-gray-600"
-                ></ion-icon>
-              </a>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- footer -->
-    <div class="lg:mt-28 mt-10 mb-7 px-12 border-t pt-7">
-      <div
-        class="
-          flex flex-col
-          items-center
-          justify-between
-          lg:flex-row
-          max-w-6xl
-          mx-auto
-          lg:space-y-0
-          space-y-3
-        "
-      >
-        <p class="capitalize font-medium">© copyright 2021 Bookplus</p>
-        <div class="lg:flex space-x-4 text-gray-700 capitalize hidden">
-          <a href="#"> About</a>
-          <a href="#"> Help</a>
-          <a href="#"> Terms</a>
-          <a href="#"> Privacy</a>
         </div>
       </div>
     </div>

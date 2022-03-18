@@ -2,17 +2,19 @@
   <!-- Main Contents -->
   <div class="main_content">
     <div class="container">
-      <div class="text-2xl font-semibold mb-3 text-black">
-        Browse categories
+      <div class="flex align-self-center justify-between">
+        <div class="text-2xl font-semibold text-black">
+          Browse categories
+        </div>
+        <a class="button" href="#modal-example" uk-toggle v-if="$store.state.user.user.role == 'Admin'">Add Category</a>
       </div>
-      <a class="button gray" href="#modal-example" uk-toggle>Add Category</a>
 
-      <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4 mt-3">
-        <a
+      <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4 mt-10">
+        <router-link
           v-for="category in categories"
           :key="category._id"
-          :href="`/courses?category=${category.name}`"
-          class="rounded-md overflow-hidden relative w-full lg:h-48 h-40"
+          :to="`/courses?category=${category.name}`"
+          class="rounded-md overflow-hidden relative w-full lg:h-48 h-40 cursor-pointer"
         >
           <div
             class="absolute w-full h-3/4 -bottom-12 bg-gradient-to-b from-transparent to-gray-800 z-10"
@@ -27,7 +29,7 @@
           >
             {{ category.name }}
           </div>
-        </a>
+        </router-link>
       </div>
 
       <div id="modal-example" uk-modal>

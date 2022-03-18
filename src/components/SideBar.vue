@@ -3,7 +3,21 @@
         <div class="sidebar">
             <div class="sidebar_inner" data-simplebar>
                 <ul class="side-colored">
-                    <router-link to="/create-course" tag="li" active-class="active" v-if="isLoggedIn && isTeacher">
+                    <router-link to="/dashboard" tag="li" active-class="active" v-if="isAdmin">
+                        <a class="side-colored__item">
+                            <svg width="512" class="bg-gradient-to-br from-purple-300 p-1 rounded-md side-icon text-opacity-80 text-white to-blue-500" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="36" y="411" class="opacity-80" width="440" height="45" rx="22.5" fill="white"/>
+                                <rect x="36" y="383" class="opacity-80" width="165" height="50" rx="25" transform="rotate(-90 36 383)" fill="white"/>
+                                <rect x="192" y="383" class="opacity-80" width="259" height="50" rx="25" transform="rotate(-90 192 383)" fill="white"/>
+                                <rect x="270" y="383" class="opacity-80" width="71" height="50" rx="25" transform="rotate(-90 270 383)" fill="white"/>
+                                <rect x="348" y="383" class="opacity-80" width="327" height="50" rx="25" transform="rotate(-90 348 383)" fill="white"/>
+                                <rect x="426" y="383" class="opacity-80" width="243" height="50" rx="25" transform="rotate(-90 426 383)" fill="white"/>
+                                <rect x="114" y="383" class="opacity-80" width="105" height="50" rx="25" transform="rotate(-90 114 383)" fill="white"/>
+                            </svg>
+                            <span>Dashboard</span>
+                        </a>
+                    </router-link>
+                    <router-link to="/create-course" tag="li" active-class="active" v-if="isLoggedIn && (isTeacher || isAdmin)">
                         <a href="javascript:void(0)">
                             <ion-icon name="compass" class="bg-gradient-to-br from-purple-300 p-1 rounded-md side-icon text-opacity-80 text-white to-blue-500">
                             </ion-icon>
@@ -55,30 +69,12 @@
                 </ul>
 
                 <ul class="side_links" data-sub-title="Pages">
-                    <li><a href="page-pricing.html"> <ion-icon name="card-outline" class="side-icon"></ion-icon> Pricing  </a></li>
-                    <li><a href="page-help.html"> <ion-icon name="information-circle-outline" class="side-icon"></ion-icon> Help </a></li>
-                    <li><a href="page-faq.html"> <ion-icon name="albums-outline" class="side-icon"></ion-icon> Faq </a></li>
-                    <li><a href="page-forum.html"> <ion-icon name="chatbubble-ellipses-outline" class="side-icon"></ion-icon> Forum <span class="soon">new</span> </a></li>
-                    <li><a href="pages-cart.html"> <ion-icon name="receipt-outline" class="side-icon"></ion-icon> Cart list </a></li>
-                    <li><a href="pages-account-info.html"> <ion-icon name="reader-outline" class="side-icon"></ion-icon> Billing </a></li>
-                    <li><a href="pages-payment-info.html"> <ion-icon name="wallet-outline" class="side-icon"></ion-icon> Payments</a></li>
-                    <li><a href="page-term.html"> <ion-icon name="document-outline" class="side-icon"></ion-icon> Term </a></li>
-                    <li><a href="page-privacy.html"> <ion-icon name="document-text-outline" class="side-icon"></ion-icon> Privacy </a></li> 
-                    <li><a href="page-setting.html"> <ion-icon name="settings-outline" class="side-icon"></ion-icon> Setting </a></li> 
-                    <li><a href="#"> Development  </a> 
-                        <ul>
-                            <li><a href="development-elements.html"> Elements  </a></li>
-                            <li><a href="development-components.html"> Compounents </a></li>
-                            <li><a href="development-plugins.html"> Plugins </a></li>
-                            <li><a href="development-icons.html"> Icons </a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#"> Authentication  </a> 
-                        <ul>
-                            <li><a href="form-login.html">form login </a></li>
-                            <li><a href="form-register.html">form register</a></li> 
-                        </ul>
-                    </li>
+                    <li><router-link to="/faq"> <ion-icon name="albums-outline" class="side-icon"></ion-icon> Faq </router-link></li>
+                    <li><router-link to="/terms"> <ion-icon name="chatbubble-ellipses-outline" class="side-icon"></ion-icon> Terms <span class="soon">new</span> </router-link></li>
+                    <!-- <li><a href="pages-account-info.html"> <ion-icon name="reader-outline" class="side-icon"></ion-icon> Billing </a></li> -->
+                    <!-- <li><a href="pages-payment-info.html"> <ion-icon name="wallet-outline" class="side-icon"></ion-icon> Payments</a></li> -->
+                    <li><router-link to="/privacy"> <ion-icon name="document-text-outline" class="side-icon"></ion-icon> Privacy </router-link></li> 
+                    <li><router-link to="/settings"> <ion-icon name="settings-outline" class="side-icon"></ion-icon> Setting </router-link></li> 
                 </ul>
 
                 <div class="side_foot_links">
@@ -106,6 +102,14 @@ export default {
             user = JSON.parse(user)
 
             return user.role == 'Instructor'
+        },
+
+        isAdmin() {
+            // check local storage for user type
+            let user = localStorage.getItem('user')
+            user = JSON.parse(user)
+
+            return user.role == 'Admin'
         },
 
         isLoggedIn() {

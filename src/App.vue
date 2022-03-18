@@ -3,14 +3,14 @@
         id="app"
         :class="showNav ? 'flex flex-col min-h-screen' : 'is-verticle'"
     >
-        <div v-if="this.$route.name !== 'lectures'">
+        <div v-if="this.$route.name !== 'lecture'">
             <Navbar v-if="showNav" />
             <LoggedNav v-else />
         </div>
         <transition name="fade-in" mode="out-in">
           <router-view class="flex-grow flex flex-col justify-center" />
         </transition>
-        <div v-if="this.$route.name !== 'lectures'">
+        <div v-if="this.$route.name !== 'lecture'">
             <SideBar v-if="!showNav" />
         </div>
         <div class="lg:mb-5 py-3 uk-link-reset" v-if="showNav">
@@ -53,7 +53,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .fade-in-enter {
   opacity: 0;
   transform: translateY(10px);
@@ -67,5 +67,11 @@ export default {
   transition: all .22s;
   opacity: 0;
   transform: translateY(10px);
+}
+
+button.button:disabled {
+    background-color: #f5f5f5;
+    color: #868e96;
+    cursor: not-allowed;
 }
 </style>

@@ -109,7 +109,7 @@ export default {
                 UIkit.notification({ message: 'User created <strong>successfully</strong> <br /> redirecting to login' , pos: 'top-right', status: 'success'  });
                 setTimeout(() => {
                     this.$router.push('/login');
-                }, 3000);
+                }, 1200);
             })
             .catch(err => {
                 this.errors = err.response.data

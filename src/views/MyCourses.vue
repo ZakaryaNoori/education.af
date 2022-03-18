@@ -23,8 +23,7 @@
                 <router-link
                   :to="'/courses/' + course.id"
                   class="uk-link-reset block h-full"
-                  tag="a"
-                >
+                  tag="a">
                   <div class="card uk-transition-toggle h-full flex flex-col">
                     <div class="card-media h-40">
                       <div class="card-media-overly"></div>

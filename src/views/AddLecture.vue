@@ -18,6 +18,11 @@
           <input type="file" ref="file" @change="uploadFile($event.target)">
           <p class="text-sm text-red-500 mt-1">{{ errors.attachments }}</p>
         </div>
+        <div>
+          <label for="title" class="mb-1 text-sm"> Embed link </label>
+          <input type="text" id="title" placeholder="e.g. https://www.youtube.com/embed/your-video" class="with-border" v-model="lecture.embedLink">
+          <p class="text-sm text-red-500 mt-1">{{ errors.embedLink }}</p>
+        </div>
         <div class="flex justify-end">
           <button class="button">Add lecture</button>
         </div>
@@ -34,7 +39,7 @@ export default {
         title: '',
         description: '',
         attachments: [],
-        course: this.$route.params.id
+        course: this.$route.params.id,
       },
       errors: [],
     }
