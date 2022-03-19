@@ -2,6 +2,38 @@
   <div class="main_content">
     <div class="container">
       <div class="text-2xl font-medium mb-10">Dashboard</div>
+      <div class="grid grid-cols-3 mb-8 gap-4">
+        <div class="flex flex-col items-center justify-between bg-white rounded-lg py-4 h-32">
+          <span></span>
+          <span class="font-bold text-2xl">{{ stats.instructors }}</span>
+          <span>Instructors</span>
+        </div>
+        <div class="flex flex-col items-center justify-between bg-white rounded-lg py-4 h-32">
+          <span></span>
+          <span class="font-bold text-2xl">{{ stats.students }}</span>
+          <span>Students</span>
+        </div>
+        <div class="flex flex-col items-center justify-between bg-white rounded-lg py-4 h-32">
+          <span></span>
+          <span class="font-bold text-2xl">{{ stats.courses }}</span>
+          <span>Courses</span>
+        </div>
+        <div class="flex flex-col items-center justify-between bg-white rounded-lg py-4 h-32">
+          <span></span>
+          <span class="font-bold text-2xl">{{ stats.books }}</span>
+          <span>Books</span>
+        </div>
+        <div class="flex flex-col items-center justify-between bg-white rounded-lg py-4 h-32">
+          <span></span>
+          <span class="font-bold text-2xl">{{ stats.lectures }}</span>
+          <span>Lectures</span>
+        </div>
+        <div class="flex flex-col items-center justify-between bg-white rounded-lg py-4 h-32">
+          <span></span>
+          <span class="font-bold text-2xl"> {{ stats.categories }}</span>
+          <span>Categories</span>
+        </div>
+      </div>
       <div class="text-lg mb-2">Users:</div>
       <div class="bg-white p-4 rounded-lg">
         <table class="table-auto w-full">
@@ -13,7 +45,7 @@
             <th class="p-2 border">Role</th>
             <th class="p-2 border">Actions</th>
           </tr>
-          <tr v-for="(user, index) in users" :key="index">
+          <tr v-for="(user, index) in users.docs" :key="index">
             <td class="p-2 border">{{ index + 1 }}</td>
             <td class="p-2 border">{{ user.name }}</td>
             <td class="p-2 border">{{ user.phone }}</td>
@@ -37,12 +69,34 @@
             <th class="p-2 border">Lectures Count</th>
             <th class="p-2 border">Actions</th>
           </tr>
-          <tr v-for="(course, index) in courses" :key="index">
+          <tr v-for="(course, index) in courses.docs" :key="index">
             <td class="p-2 border">{{ index + 1 }}</td>
             <td class="p-2 border">{{ course.title }}</td>
             <td class="p-2 border">{{ course.user.name }}</td>
             <td class="p-2 border">{{ course.categories.join(", ") }}</td>
             <td class="p-2 border">{{ course.lecturesCount }}</td>
+            <td class="p-2 border text-center">
+              <ion-icon name="trash-outline"></ion-icon>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="h-12"></div>
+      <div class="text-lg mb-2">Books:</div>
+      <div class="bg-white p-4 rounded-lg">
+        <table class="table-auto w-full">
+          <tr>
+            <th class="p-2 border">Id</th>
+            <th class="p-2 border">Name</th>
+            <th class="p-2 border">Author</th>
+            <th class="p-2 border">Publish Date</th>
+            <th class="p-2 border">Actions</th>
+          </tr>
+          <tr v-for="(book, index) in books.docs" :key="index">
+            <td class="p-2 border">{{ index + 1 }}</td>
+            <td class="p-2 border">{{ book.name }}</td>
+            <td class="p-2 border">{{ book.author }}</td>
+            <td class="p-2 border">{{ book.publishDate }}</td>
             <td class="p-2 border text-center">
               <ion-icon name="trash-outline"></ion-icon>
             </td>
@@ -59,32 +113,35 @@ export default {
     return {
       users: [],
       courses: [],
+      books: [],
+      stats: {}
     }
   },
   mounted () {
-    this.getUsers();
-    this.getCourses();
+    this.getData('users');
+    this.getData('courses');
+    this.getData('books');
+    this.getStats()
   },
   methods: {
-    getUsers() {
-      this.$http.get('/users')
-      .then(res => {
-        this.users = res.data.docs
+    getData(collection) {
+      this.$http.get(`/${collection}`).then(response => {
+        this[collection] = response.data;
       })
       .catch(err => {
         console.log(err)
       })
     },
 
-    getCourses() {
-      this.$http.get('/courses')
-      .then(res => {
-        this.courses = res.data.docs
+    getStats() {
+      this.$http.get('/dashboard/stats').then(response => {
+        console.log(response.data)
+        this.stats = response.data;
       })
       .catch(err => {
         console.log(err)
       })
-    },
+    }
   },
 }
 </script>
