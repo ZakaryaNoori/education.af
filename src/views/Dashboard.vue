@@ -57,6 +57,9 @@
           </tr>
         </table>
       </div>
+      <div class="py-2">
+        <pagination :paginationFields="users" @changePage="getData('users', $event)"/>
+      </div>
       <div class="h-12"></div>
       <div class="text-lg mb-2">Courses:</div>
       <div class="bg-white p-4 rounded-lg">
@@ -81,6 +84,9 @@
           </tr>
         </table>
       </div>
+      <div class="py-2">
+        <pagination :paginationFields="courses" @changePage="getData('courses', $event)"/>
+      </div>
       <div class="h-12"></div>
       <div class="text-lg mb-2">Books:</div>
       <div class="bg-white p-4 rounded-lg">
@@ -103,17 +109,22 @@
           </tr>
         </table>
       </div>
+      <div class="py-2">
+        <pagination :paginationFields="books" @changePage="getData('books', $event)"/>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import Pagination from '@/components/Pagination.vue';
 export default {
+  components: { Pagination },
   data() {
     return {
-      users: [],
-      courses: [],
-      books: [],
+      users: {},
+      courses: {},
+      books: {},
       stats: {}
     }
   },
@@ -124,8 +135,8 @@ export default {
     this.getStats()
   },
   methods: {
-    getData(collection) {
-      this.$http.get(`/${collection}`).then(response => {
+    getData(collection, page = 1) {
+      this.$http.get(`/${collection}?page=${page}`).then(response => {
         this[collection] = response.data;
       })
       .catch(err => {
@@ -135,7 +146,6 @@ export default {
 
     getStats() {
       this.$http.get('/dashboard/stats').then(response => {
-        console.log(response.data)
         this.stats = response.data;
       })
       .catch(err => {
