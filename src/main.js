@@ -38,6 +38,8 @@ Vue.prototype.$http = AxiosInstance
 
 Vue.config.productionTip = false
 
+Vue.component('pagination', require('./components/Pagination.vue').default);
+
 new Vue({
   router,
   store,
