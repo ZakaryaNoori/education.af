@@ -6,22 +6,22 @@
         <div class="lg:w-2/3 flex-shrink-0">
           <div class="text-2xl font-semibold">Books</div>
 
-          <div class="relative mt-2" uk-slider="finite: true">
-            <div class="uk-slider-container px-1 py-3">
+          <div v-if="books.docs" class="relative mt-2" uk-slider="finite: true">
+            <div class="px-1 py-3">
               <ul
                 class="
-                  uk-slider-items
                   uk-child-width-1-4@m
                   uk-child-width-1-3@s
                   uk-child-width-1-2
                   uk-grid-small
                   uk-grid
+                  gap-4
                   text-sm
                   font-medium
                   text-center
                 "
               >
-                <li v-for="book in books" :key="book.id">
+                <li v-for="book in books.docs" :key="book.id">
                   <div
                     class="
                       relative
@@ -88,6 +88,9 @@
               >
                 <i class="icon-feather-chevron-right"></i
               ></a>
+              <div class="py-4">
+                <pagination :paginationFields="books" @changePage="fetchBooks($event)" />
+              </div>
             </div>
           </div>
         </div>
@@ -100,7 +103,7 @@
 
           <div class="space-y-7 mt-6">
             <div
-              v-for="book in books"
+              v-for="book in books.docs"
               :key="book.id"
               class="p-3 bg-white shadow rounded-md flex items-center space-x-3"
             >
@@ -125,7 +128,7 @@
 export default {
   data() {
     return {
-      books: null,
+      books: {},
       loading: true,
       API_URL: 'http://localhost:3000/api/'
     }
@@ -135,11 +138,11 @@ export default {
   },
 
   methods: {
-    fetchBooks() {
-      this.$http.get('books')
+    fetchBooks(page = 1) {
+      this.$http.get('books?page=' + page)
           .then(response => {
             this.loading = false;
-            this.books = response.data.docs
+            this.books = response.data
           })
     }
   },

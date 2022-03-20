@@ -18,7 +18,7 @@
                                 
                                 <ul class="grid grid-cols-3 gap-6" v-if="!loading">
                                     
-                                    <li v-for="course in courses" :key="course.id">
+                                    <li v-for="course in courses.docs" :key="course.id">
                                       <router-link :to="'/courses/' + course.id" class="uk-link-reset block h-full" tag="a">
                                         <div class="card uk-transition-toggle h-full flex flex-col relative">
                                             <div
@@ -46,12 +46,13 @@
                                       </router-link>
 
                                     </li>
-                                    
-    
                                 </ul>
                                 <h1 v-else>
                                     Loading...
                                 </h1>
+                            </div>
+                            <div class="py-4">
+                                <pagination :paginationFields="courses" @changePage="fetchCourses($event)" />
                             </div>
                         </div>
                     
@@ -152,10 +153,12 @@
 </template>
 
 <script>
+import Pagination from '@/components/Pagination.vue';
 export default {
+  components: { Pagination },
   data() {
     return {
-      courses: null,
+      courses: {},
       loading: true
     }
   },
@@ -164,17 +167,17 @@ export default {
   },
 
   methods: {
-    fetchCourses() {
-        let url = 'courses';
+    fetchCourses(page = 1) {
+        let url = `courses?page=${page}`;
 
       if (this.$route.query.category) {
-        url = `courses?category=${this.$route.query.category}`;
+        url = url + `&category=${this.$route.query.category}`;
       }
 
       this.$http.get(url)
           .then(response => {
             this.loading = false;
-            this.courses = response.data.docs
+            this.courses = response.data
           })
     },
 
